@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+  <title>Japan COVID-19 Coronavirus Tracker</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i,800&display=swap" rel="stylesheet">
+
+  <link rel="shortcut icon" type="image/png" href="https://covid19japan.com/static/favicon.png" />
+
+
+  <!-- Size specific PNG faviocons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png?v=1586005472">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon-16x16.png?v=1586005472">
+
+  <!-- iOS icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png?v=1586005472">
+  
+  <!-- MacOS Icon for Safari & Touchbar -->
+  <link rel="mask-icon" href="/static/icons/safari-pinned-tab.svg?v=1586005472" color="#8ecafb">
+  
+  <!-- Android Manifest -->
+  <link rel="manifest" href="/static/icons/site.webmanifest?v=1586005472">
+  
+  <!-- Windows Browserconfig -->
+  <meta name="msapplication-TileColor" content="#8ecafb">
+  <meta name="msapplication-config" content="/static/icons/browserconfig.xml?v=1586005472">
+  <meta name="theme-color" content="#8ecafb">
+
+  <meta
+    name="description"
+    content="Live updates of the Coronavirus COVID-19 outbreak in Japan"
+  />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://covid19japan.com/" />
+  <meta name="twitter:title" content="Japan COVID-19 Coronavirus Tracker" />
+
+  <meta
+    name="twitter:description"
+    content="Live updates of the Coronavirus COVID-19 outbreak in Japan"
+  />
+  <meta property="og:title" content="Japan COVID-19 Coronavirus Tracker" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://covid19japan.com/" />
+  <meta
+    property="og:image"
+    content="https://covid19japan.com/static/map.jpg"
+  />
+  <meta
+    property="og:description"
+    content="Live updates of the Coronavirus COVID-19 outbreak in Japan"
+  />
+</head>
+<body class="<%= htmlWebpackPlugin.options.bodyClass %>">
+  <div id="page">
+    <header class="embed-hide">
+      <h1 data-i18n="covid-19-tracker">Japan COVID-19 Coronavirus Tracker</h1>
+      <div class="toolbar">
+        <div class="lang-picker">
+          <span class="lang-picker-title" data-i18n="languages">Languages:</span>
+          <span class="lang-picker-languages">
+          </span>
+        </div>
+        <div id="last-updated">
+          <span data-i18n="last-updated">Last Updated:</span> <strong id="last-updated-time">-</strong>
+        </div>
+      </div>
+    </header>
+  
+    <section id="kpi" class="loading">
+      <div class="kpi-box" id="kpi-confirmed">
+        <a href="#confirmed" class="inline">
+          <div class="label" data-i18n="kpi-confirmed">Confirmed</div>
+        </a>
+        <div class="value"><div class="lds-dual-ring"></div></div>
+        <div class="diff">&nbsp;</div>
+        <div class="description"></div>
+        <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+          <linearGradient id="kpi-confirmed-chart-gradient" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(244,67,54, 0.6)" />
+            <stop offset="90%" stop-color="rgba(244,67,54, 0)" />
+            <stop offset="100%" stop-color="rgba(244,67,54, 0)" />
+          </linearGradient>
+        </svg>
+        <div class="chart" id="kpi-confirmed-chart"></div>
+        <div class="chart-caption" data-i18n="confirmed-chart-caption">Confirmed cases per day</div>
+      </div>
+  
+  
+      <div class="kpi-box" id="kpi-recovered">
+        <div class="label" data-i18n="kpi-recovered">Recovered</div>
+        <div class="value"><div class="lds-dual-ring"></div></div>
+        <div class="diff">&nbsp;</div>
+        <div class="description"></div>
+        <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+          <linearGradient id="kpi-recovered-chart-gradient" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(24,118,211, 0.6)" />
+            <stop offset="90%" stop-color="rgba(24,118,211, 0)" />
+            <stop offset="100%" stop-color="rgba(24,118,211, 0)" />
+          </linearGradient>
+        </svg>
+        <div class="chart" id="kpi-recovered-chart"></div>
+        <div class="chart-caption" data-i18n="recovered-chart-caption">Recoveries per day</div>
+      </div>
+
+      <div class="kpi-box" id="kpi-critical">
+        <div class="label" data-i18n="kpi-critical">Critical</div>
+        <div class="value"><div class="lds-dual-ring"></div></div>
+        <div class="diff">&nbsp;</div>
+        <div class="description"></div>
+        <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+          <linearGradient id="kpi-critical-chart-gradient" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(114,4,5, 0.6)" />
+            <stop offset="90%" stop-color="rgba(114,4,5, 0)" />
+            <stop offset="100%" stop-color="rgba(114,4,5, 0)" />
+          </linearGradient>
+        </svg>
+        <div class="chart" id="kpi-critical-chart"></div>
+        <div class="chart-caption" data-i18n="critical-chart-caption">Critical patients per day</div>
+      </div>
+
+      <div class="kpi-box" id="kpi-deceased">
+        <a href="#deaths" class="inline">
+          <div class="label" data-i18n="kpi-deceased">Deaths</div>
+        </a>
+        <div class="value"><div class="lds-dual-ring"></div></div>
+        <div class="diff">&nbsp;</div>
+        <div class="description"></div>
+        <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+          <linearGradient id="kpi-deceased-chart-gradient" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(54,72,79, 0.6)" />
+            <stop offset="90%" stop-color="rgba(54,72,79, 0)" />
+            <stop offset="100%" stop-color="rgba(54,72,79, 0)" />
+          </linearGradient>
+        </svg>
+        <div class="chart" id="kpi-deceased-chart"></div>
+        <div class="chart-caption" data-i18n="deceased-chart-caption">Deaths per day</div>
+      </div>
+
+      <div class="kpi-box" id="kpi-active" data-tippy-i18n="kpi-active-tooltip" data-tippy-placement="bottom" >
+        <a href="#active" class="inline">
+          <div class="label"><span data-i18n="kpi-active">Active</span> &#9432;</div>     
+        </a>
+        <div class="value"><div class="lds-dual-ring"></div></div>
+        <div class="diff">&nbsp;</div>
+        <div class="description"></div>
+        <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+          <linearGradient id="kpi-active-chart-gradient" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(223,14,31, 0.6)" />
+            <stop offset="90%" stop-color="rgba(223,14,31, 0)" />
+            <stop offset="100%" stop-color="rgba(223,14,31, 0)" />
+          </linearGradient>
+        </svg>
+        <div class="chart" id="kpi-active-chart"></div>
+        <div class="chart-caption" data-i18n="active-chart-caption">Active cases per day</div>
+      </div>
+    
+      <div class="kpi-box" id="kpi-tested">
+        <div class="vitals">
+          <a href="#tested" class="inline">
+            <div class="label" data-i18n="kpi-tested">Tested</div>
+          </a>
+          <div class="value"><div class="lds-dual-ring"></div></div>
+          <div class="diff">&nbsp;</div>
+          <div class="description"></div>  
+        </div>
+        <div class="chart-container">
+          <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+            <linearGradient id="kpi-tested-chart-gradient" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(164,173,192, 0.6)" />
+              <stop offset="90%" stop-color="rgba(164,173,192, 0)" />
+              <stop offset="100%" stop-color="rgba(164,173,192, 0)" />
+            </linearGradient>
+          </svg>
+          <div class="chart" id="kpi-tested-chart"></div>
+          <div class="chart-caption" data-i18n="tested-chart-caption">Tests per day</div>  
+        </div>
+      </div>
+
+      <div class="kpi-box" id="kpi-critical-short">
+        <div class="label" data-i18n="kpi-critical">Critical</div>
+        <div class="value"><div class="lds-dual-ring"></div></div>
+        <div class="diff">&nbsp;</div>
+        <div class="description"></div>
+      </div>
+    </section>
+
+    <section class="chart-control embed-hide">
+      <span data-i18n="time-period" class="time-period-caption">Time period</span>: 
+      <a data-i18n="all-time" id="time-period-all-time" class="time-period selected">All time</a> |
+      <a data-i18n="three-months" id="time-period-three-months" class="time-period">3 months</a>
+    </section>
+
+    <section class="national-charts" class="embed-hide">
+      <section class="daily-increase-container embed-hide">
+        <a name="confirmed">
+          <h4 data-i18n="confirmed-chart-caption">Daily Confirmed Cases</h4>
+        </a>
+        <div class="daily-increase-chart-box">
+          <div id="daily-confirmed-chart" class="daily-increase-chart">
+            <div class="loader"><div class="lds-dual-ring"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="daily-increase-container embed-hide">
+        <a name="active">
+          <h4 data-i18n="active-chart-caption">Daily Active Cases</h4>
+        </a>
+        <div class="daily-increase-chart-box">
+          <div id="daily-active-chart"  class="daily-increase-chart">
+            <div class="loader"><div class="lds-dual-ring"></div></div>
+          </div>
+        </div>
+        <p class="chart-description" data-i18n="active-cases-description">
+          Total patients that are still currently testing positive for COVID-19. 
+          (Total confirmed cases minus total recovered cases).
+        </p>
+      </section>
+    </section>
+
+    <section class="national-charts embed-hide">
+      <section class="daily-increase-container embed-hide">
+        <a name="deaths">
+          <h4 data-i18n="deceased-chart-caption">Daily Deaths</h4>
+        </a>          
+        <div class="daily-increase-chart-box">
+          <div id="daily-deaths-chart"  class="daily-increase-chart daily-increase-chart-short">
+            <div class="loader"><div class="lds-dual-ring"></div></div>
+          </div>
+        </div>
+      </section>     
+      
+      <section class="daily-increase-container embed-hide">
+        <a name="tested">
+          <h4 data-i18n="tested-chart-caption">Daily Tests</h4>
+        </a>
+        <div class="daily-increase-chart-box" >
+          <div id="daily-tests-chart"  class="daily-increase-chart daily-increase-chart-short">
+            <div class="loader"><div class="lds-dual-ring"></div></div>
+          </div>
+        </div>
+      </section>      
+    </section>
+
+    <section id="prefecture-sections">
+      <section id="prefecture-map-container">       
+        <a name="map"><h4><span data-i18n="covid-19" class="embed-show">COVID-19</span> <span data-i18n="outbreak-map">Outbreak Map</span></h4></a>
+        <div id="prefecture-map-contents">
+          <div id="map-container"></div>
+          <p class="embed-show footnote">powered by <a href="https://covid19japan.com" target="_blank">COVID19Japan.com</a></p>
+          <div id="map-legend"></div>
+        </div>
+      </section>    
+
+      <section id="prefecture-top-table-container" class="embed-hide">
+        <h4 data-i18n="active-regions">Most Active Regions</h4>
+      </section>
+    </section>
+    
+  
+    <section id="regional-charts-container" class="embed-hide">
+      <a name="regional"></a>
+      <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+        <linearGradient id="regional-chart-gradient" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(0, 10, 18, 0.6)" />
+          <stop offset="90%" stop-color="rgba(0, 10, 18, 0)" />
+          <stop offset="100%" stop-color="rgba(0, 10, 18, 0)" />
+        </linearGradient>
+      </svg>
+
+    </section>
+
+    <section id="travel-restrictions" class="embed-hide">
+      <a name="travel-restrictions">
+        <h4 data-i18n="traveling-into-japan">Traveling into Japan</h4>
+      </a>
+      <p data-i18n="restrictions-link">
+        Find out about the most current travel restrictions for Foreign Nationals from the following:</span>
+      </p>
+      <ul>
+        <li><a href="http://www.moj.go.jp/nyuukokukanri/kouhou/nyuukokukanri07_00245.html">Resident Re-entry Information - Ministry of Justice</a></li>
+        <li><a href="http://www.moj.go.jp/EN/nyuukokukanri/kouhou/m_nyuukokukanri01_00003.html">Information related to COVID-19 from Immigration Services Agency (Updated) - Ministry of Justice</a></li>
+        <li><a href="https://www.mofa.go.jp/ca/fna/page4e_001053.html">Border enforcement measures</a> - Ministry of Foreign Affairs</li>
+        <li><a href="https://www.mofa.go.jp/ca/cp/page22e_000925.html">Phased Measures for Resuming Cross Border Travel</a> - Ministry of Foreign Affairs</li>
+        <li><a href="https://www.japantimes.co.jp/news/2020/11/17/national/social-issues/japan-travel-restrictions-entry/">What you need to know about the latest travel restrictions for Japan.</a> - Japan Times (21 Nov 2020)</li>
+      </ul> 
+      <p data-i18n="non-resident-restrictions">All foreign tourists are barred from entering the country. Some business travel is allowed from select countries.</p>
+    </section>
+  
+    <section id="helpful-links" class="embed-hide">
+      <a name="links">
+        <h4 data-i18n="helpful-links">Helpful Links</h4>
+      </a>
+      <ul>
+        <li>
+          <a href="http://idsc.tokyo-eiken.go.jp/diseases/2019-ncov/">
+            Information from the Tokyo Metropolitan Infectious Disease Surveillance Center
+          </a>
+        </li>
+        <li>
+          <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/covid19-kikokusyasessyokusya.html">
+            If you think you might have the virus
+          </a>
+        </li>
+        <li>
+          <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019">
+            WHO information about the virus
+          </a>
+        </li>
+        <li>
+          <a href="https://www.fukushihoken.metro.tokyo.lg.jp/iryo/kansen/tagengoguide.files/tagengogaido2019-mihiraki.pdf">
+            Monitoring your symptoms if you feel ill
+          </a>
+        </li>
+        <li>
+          <a href="https://twitter.com/i/lists/1069503606880006144">
+            Active relevant Twitter accounts
+          </a>
+        </li>
+        <li>
+          English language news sources: <a href="https://www.japantimes.co.jp/">Japan Times</a>, <a href="https://english.kyodonews.net/">Kyodo News</a>, <a href="http://www.asahi.com/ajw/">Asahi Shimbun</a>, <a href="https://mainichi.jp/english/">Mainichi Shimbun</a>
+        </li>
+      </ul>
+    </section>
+  </div>
+  <div id="footer-container">
+    <footer>
+      <p>
+        Built by <a href="https://twitter.com/reustle" target="_blank">Shane Reustle</a> and many more code and data contributors.
+      </p>
+      <p>
+        <a href="https://twitter.com/reustle" title="Shane Reustle" target="_blank" class="avatar">
+          <img src="/static/avatars/shane.jpg" alt="Shane Reustle">
+        </a>
+        <a href="https://twitter.com/kayzjh" title="Kay Zhou" target="_blank" class="avatar">
+          <img src="/static/avatars/kay.jpg" alt="Kay Zhou">
+        </a>
+        <a href="https://twitter.com/guchagucha" title="Mark Thompson" target="_blank" class="avatar">
+          <img src="/static/avatars/mark.jpg" alt="Mark Thompson">
+        </a>
+        <a href="https://twitter.com/liquidx" title="Alastair Tse" target="_blank" class="avatar">
+          <img src="/static/avatars/alastair.jpg" alt="Alastair Tse">
+        </a>
+        <a href="https://twitter.com/lchin" title="Leonard Chin" target="_blank" class="avatar">
+          <img src="/static/avatars/leonard.jpg" alt="Leonard Chin">
+        </a>
+        <a href="https://github.com/mertd" title="Mert Demir" target="_blank" class="avatar">
+          <img src="/static/avatars/mert.jpg" alt="Mert Demir">
+        </a>
+        <a href="https://twitter.com/kojiannoura" title="Koji Annoura" target="_blank" class="avatar">
+          <img src="/static/avatars/koji.jpg" alt="Koji Annoura">
+        </a>
+        <a href="https://twitter.com/hnn_kbysh" title="Hinano Kobayashi" target="_blank" class="avatar">
+          <img src="/static/avatars/hinano.jpg" alt="Hinano Kobayashi">
+        </a>
+        <a href="https://twitter.com/vlumi" title="Ville Misaki" target="_blank" class="avatar">
+          <img src="/static/avatars/vlumi.jpg" alt="Ville Misaki">
+        </a>
+
+        <a href="https://github.com/ggouaillardet" title="Gilles Gouaillardet" target="_blank" class="avatar">
+          <img src="/static/avatars/gilles.png" alt="Gilles Gouaillardet">
+        </a>
+
+        <a href="https://github.com/reustle/covid19japan/graphs/contributors" title="Other Contributors" target="_blank" class="avatar">
+          <img src="https://ui-avatars.com/api/?background=1876D3&size=80&bold=true&color=fff&name=%2B" alt="Other Contributors">
+        </a>
+      </p>
+      <p>
+        Supported by <a href="https://reustle.co" target="_blank">Reustle K.K.</a>, <a href="https://mapbox.com/community/" target="_blank">Mapbox</a>, <a href="https://sentry.io" target="_blank">Sentry.io</a>, and <a href="https://netlify.com/" target="_blank">Netlify</a>.
+        Data sourced from Prefectural Governments and MHLW (<a href="https://github.com/reustle/covid19japan-data/">Full Details</a>.)
+      </p>
+      <p>
+        Contribute to <a href="https://github.com/reustle/covid19japan">covid19japan on GitHub</a>
+      </p>
+    </footer>
+  </div>
+  <!-- JS -->
+  <script src="https://browser.sentry-cdn.com/5.12.1/bundle.min.js" integrity="sha384-y+an4eARFKvjzOivf/Z7JtMJhaN6b+lLQ5oFbBbUwZNNVir39cYtkjW1r6Xjbxg3" crossorigin="anonymous"></script>
+  <script src="https://browser.sentry-cdn.com/5.12.1/captureconsole.min.js"></script>
+  <script>
+    if (window.location.hostname == 'covid19japan.com') {
+      Sentry.init({
+        dsn: 'https://1c7127f5f5b2432d99a5bf44a3b74d08@sentry.io/2967034',
+        debug: false,
+        blacklistUrls: [
+          // Chrome extensions
+          /extensions\//i,
+          /^chrome:\/\//i,
+        ],
+              ignoreErrors: [
+          // Ignore Google Translate Chrome extension errors.
+          // See: https://medium.com/@amir.harel/a-b-target-classname-indexof-is-not-a-function-at-least-not-mine-8e52f7be64ca
+          "a[b].target.className.indexOf is not a function",
+        ],
+        integrations: [
+          new Sentry.Integrations.CaptureConsole({
+            levels: ['error']
+          })
+        ]
+      })
+    }
+  </script>  
+  <script async src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2580539-41"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-2580539-41');
+  </script>
+
+</body>
+</html>
